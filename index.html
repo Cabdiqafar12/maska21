@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Online Marketing</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #1d2671, #c33764);
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  width: 420px;
+  background: #fff;
+  margin: 50px auto;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+h1 {
+  text-align: center;
+  color: #c33764;
+}
+
+label {
+  font-weight: bold;
+  display: block;
+  margin-top: 15px;
+}
+
+select, input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+}
+
+button {
+  width: 100%;
+  margin-top: 20px;
+  padding: 10px;
+  background: #c33764;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #1d2671;
+}
+
+#message {
+  margin-top: 15px;
+  font-weight: bold;
+  text-align: center;
+}
+
+#result {
+  text-align: center;
+  color: #1d2671;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>Online Marketing Services</h1>
+
+  <label>Choose Category</label>
+  <select id="category">
+    <option value="">-- Select Category --</option>
+  </select>
+
+  <label>Choose Product</label>
+  <select id="product"></select>
+
+  <label>Quantity</label>
+  <input type="number" id="quantity" placeholder="Enter quantity">
+
+  <button onclick="calculate()">Calculate Total</button>
+
+  <p id="message"></p>
+  <h2 id="result"></h2>
+</div>
+
+<script>
+// Product data (Arrays & Objects)
+const data = {
+  "Digital Advertising": [
+    { name: "Google Ads Campaign", price: 120 },
+    { name: "Facebook Ads Setup", price: 90 }
+  ],
+  "Social Media Marketing": [
+    { name: "Instagram Growth Package", price: 80 },
+    { name: "TikTok Promotion", price: 95 }
+  ],
+  "SEO Services": [
+    { name: "SEO Optimization", price: 100 },
+    { name: "Keyword Research", price: 60 }
+  ],
+  "Email Marketing": [
+    { name: "Email Campaign Setup", price: 50 },
+    { name: "Newsletter Design", price: 40 }
+  ]
+};
+
+const category = document.getElementById("category");
+const product = document.getElementById("product");
+const quantity = document.getElementById("quantity");
+const message = document.getElementById("message");
+const result = document.getElementById("result");
+
+// Load categories dynamically
+for (let cat in data) {
+  let option = document.createElement("option");
+  option.value = cat;
+  option.textContent = cat;
+  category.appendChild(option);
+}
+
+// Load products when category changes
+category.addEventListener("change", function () {
+  product.innerHTML = "";
+  let selected = this.value;
+
+  if (selected === "") return;
+
+  data[selected].forEach((item, index) => {
+    let option = document.createElement("option");
+    option.value = index;
+    option.textContent = item.name + " ($" + item.price + ")";
+    product.appendChild(option);
+  });
+});
+
+// Calculate total price
+function calculate() {
+  if (category.value === "" || quantity.value <= 0) {
+    message.textContent = "❌ Please enter valid data";
+    result.textContent = "";
+    return;
+  }
+
+  let selectedProduct = data[category.value][product.value];
+  let total = selectedProduct.price * quantity.value;
+
+  message.textContent = "✅ Calculation Successful";
+  result.textContent = "Total Price: $" + total;
+}
+</script>
+
+</body>
+</html>
